@@ -17,7 +17,12 @@ app.secret_key = SECRET_KEY
 app.config['JSON_AS_ASCII'] = False  # Hỗ trợ tiếng Việt trong JSON
 
 # ── Khởi tạo database ────────────────────────────────────────────────────────
-create_tables()
+try:
+    create_tables()
+except Exception as e:
+    print(f"[WARNING] Database initialization error: {e}", flush=True)
+    # App can still run even if database init fails
+
 
 
 # ═══════════════════════════════════════════════════════════════════
