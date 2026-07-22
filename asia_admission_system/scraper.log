@@ -1,0 +1,60 @@
+2026-07-22 09:16:58,497 [INFO] ============================================================
+2026-07-22 09:16:58,497 [INFO] 🚀 BẮT ĐẦU SCRAPING DỮ LIỆU ASIA UNIVERSITY VIETNAM
+2026-07-22 09:16:58,565 [INFO]    Thời gian: 2026-07-22 09:16:58
+2026-07-22 09:16:58,566 [INFO] ============================================================
+2026-07-22 09:17:07,846 [INFO] ============================================================
+2026-07-22 09:17:07,846 [INFO] 🚀 BẮT ĐẦU SCRAPING DỮ LIỆU ASIA UNIVERSITY VIETNAM
+2026-07-22 09:17:07,846 [INFO]    Thời gian: 2026-07-22 09:17:07
+2026-07-22 09:17:07,846 [INFO] ============================================================
+2026-07-22 09:17:07,847 [INFO] 
+📄 Đang cào trang: HOME (https://asia-vn.edu.vn/)
+2026-07-22 09:17:07,847 [INFO]   Đang tải: https://asia-vn.edu.vn/
+2026-07-22 09:17:09,635 [INFO]   → Xử lý trang chủ...
+2026-07-22 09:17:09,708 [INFO]   ✅ Đã lưu 14 records
+2026-07-22 09:17:09,708 [INFO] 
+📄 Đang cào trang: ADMISSION (https://asia-vn.edu.vn/tuyen-sinh/)
+2026-07-22 09:17:09,708 [INFO]   Đang tải: https://asia-vn.edu.vn/tuyen-sinh/
+2026-07-22 09:17:11,392 [INFO]   → Xử lý trang tuyển sinh...
+2026-07-22 09:17:11,438 [INFO]   ✅ Đã lưu 9 records
+2026-07-22 09:17:11,439 [INFO] 
+📄 Đang cào trang: SCHOLARSHIP (https://asia-vn.edu.vn/hoc-bong/)
+2026-07-22 09:17:11,439 [INFO]   Đang tải: https://asia-vn.edu.vn/hoc-bong/
+2026-07-22 09:17:13,153 [INFO]   → Xử lý trang học bổng...
+2026-07-22 09:17:13,209 [INFO]   ✅ Đã lưu 8 records
+2026-07-22 09:17:13,209 [INFO] 
+📄 Đang cào trang: PROGRAMS (https://asia-vn.edu.vn/nganh-hoc/)
+2026-07-22 09:17:13,209 [INFO]   Đang tải: https://asia-vn.edu.vn/nganh-hoc/
+2026-07-22 09:17:14,879 [INFO]   → Xử lý trang ngành học...
+2026-07-22 09:17:14,937 [INFO]   ✅ Đã lưu 8 records
+2026-07-22 09:17:14,937 [INFO] 
+📰 Đang cào trang TIN TỨC (https://asia-vn.edu.vn/tin-tuc/)
+2026-07-22 09:17:14,937 [INFO]   Đang tải: https://asia-vn.edu.vn/tin-tuc/
+2026-07-22 09:17:16,651 [INFO]   → Xử lý trang tin tức...
+2026-07-22 09:17:16,728 [INFO]   ✅ Đã lưu 20 bài viết
+2026-07-22 09:17:16,728 [INFO] 
+📄 Đang cào trang: ABOUT (https://asia-vn.edu.vn/gioi-thieu/)
+2026-07-22 09:17:16,728 [INFO]   Đang tải: https://asia-vn.edu.vn/gioi-thieu/
+2026-07-22 09:17:20,195 [INFO]   ✅ Đã lưu 9 records
+2026-07-22 09:17:20,195 [INFO] 
+📄 Đang cào trang: CONTACT (https://asia-vn.edu.vn/lien-he/)
+2026-07-22 09:17:20,195 [INFO]   Đang tải: https://asia-vn.edu.vn/lien-he/
+2026-07-22 09:17:21,890 [INFO]   ✅ Đã lưu 2 records
+2026-07-22 09:17:21,890 [INFO] 
+📄 Đang cào trang: FEE (https://asia-vn.edu.vn/hoc-phi/)
+2026-07-22 09:17:21,890 [INFO]   Đang tải: https://asia-vn.edu.vn/hoc-phi/
+2026-07-22 09:17:23,698 [INFO]   ✅ Đã lưu 9 records
+2026-07-22 09:17:23,698 [INFO] 
+📄 Đang cào trang: LIFE_TAIWAN (https://asia-vn.edu.vn/cuoc-song-dai-loan/)
+2026-07-22 09:17:23,698 [INFO]   Đang tải: https://asia-vn.edu.vn/cuoc-song-dai-loan/
+2026-07-22 09:17:25,670 [INFO]   ✅ Đã lưu 9 records
+2026-07-22 09:17:25,670 [INFO] 
+============================================================
+2026-07-22 09:17:25,671 [INFO] ✅ HOÀN THÀNH SCRAPING!
+2026-07-22 09:17:25,671 [INFO]    Tổng records đã lưu lần này: 88
+2026-07-22 09:17:25,673 [INFO]    Thống kê database hiện tại:
+2026-07-22 09:17:25,673 [INFO]    • university_info: 50 records
+2026-07-22 09:17:25,673 [INFO]    • programs: 4 records
+2026-07-22 09:17:25,673 [INFO]    • admission_info: 9 records
+2026-07-22 09:17:25,673 [INFO]    • scholarships: 5 records
+2026-07-22 09:17:25,673 [INFO]    • news_articles: 19 records
+2026-07-22 09:17:25,673 [INFO] ============================================================

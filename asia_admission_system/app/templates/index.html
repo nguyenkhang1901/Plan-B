@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tư vấn Tuyển sinh AI – Asia University Vietnam</title>
+  <meta name="description" content="Hệ thống tư vấn tuyển sinh thông minh của Asia University Vietnam. Hỏi đáp 24/7 về ngành học, học bổng, tuyển sinh." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    /* ═══════════════════════════════════════
+       DESIGN TOKENS & RESET
+    ═══════════════════════════════════════ */
+    :root {
+      --primary:       #0b7c3e;
+      --primary-light: #00a34b;
+      --primary-glow:  rgba(11, 124, 62, 0.35);
+      --accent:        #efaf1e;
+      --accent-light:  #f5c842;
+      --bg-deep:       #0a0f0d;
+      --bg-card:       #111a14;
+      --bg-input:      #192116;
+      --bg-msg-user:   linear-gradient(135deg, #0b7c3e, #00a34b);
+      --bg-msg-bot:    #192116;
+      --border:        rgba(0, 163, 75, 0.18);
+      --border-hover:  rgba(0, 163, 75, 0.45);
+      --text-primary:  #e8f5ec;
+      --text-secondary:#8fb89a;
+      --text-muted:    #4a6655;
+      --radius-lg:     18px;
+      --radius-md:     12px;
+      --radius-sm:     8px;
+      --shadow-green:  0 0 30px rgba(11, 124, 62, 0.2);
+      --transition:    all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg-deep);
+      color: var(--text-primary);
+      height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background:
+        radial-gradient(ellipse 80% 50% at 10% 20%, rgba(11,124,62,0.12) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 40% at 90% 80%, rgba(0,163,75,0.08) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 30% at 50% 50%, rgba(239,175,30,0.04) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ═══════════════════════════════════════
+       HEADER
+    ═══════════════════════════════════════ */
+    .header {
+      position: relative; z-index: 10;
+      background: rgba(10, 15, 13, 0.85);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+
+    .header-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo-badge {
+      width: 44px; height: 44px;
+      background: var(--bg-msg-user);
+      border-radius: var(--radius-sm);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px;
+      box-shadow: var(--shadow-green);
+      flex-shrink: 0;
+    }
+
+    .brand-text .name {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      letter-spacing: -0.02em;
+    }
+
+    .brand-text .sub {
+      font-size: 0.7rem;
+      color: var(--text-secondary);
+      margin-top: 1px;
+    }
+
+    /* Header right controls */
+    .header-controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    /* ── Language Toggle ── */
+    .lang-toggle {
+      display: flex;
+      align-items: center;
+      background: rgba(0, 163, 75, 0.06);
+      border: 1px solid var(--border);
+      border-radius: 99px;
+      padding: 3px;
+      gap: 2px;
+    }
+
+    .lang-btn {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 5px 12px;
+      border-radius: 99px;
+      cursor: pointer;
+      transition: var(--transition);
+      letter-spacing: 0.04em;
+      white-space: nowrap;
+    }
+
+    .lang-btn.active {
+      background: var(--primary);
+      color: #fff;
+      box-shadow: 0 2px 8px var(--primary-glow);
+    }
+
+    .lang-btn:not(.active):hover {
+      color: var(--primary-light);
+      background: rgba(0,163,75,0.1);
+    }
+
+    .header-status {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 0.72rem;
+      color: var(--primary-light);
+      background: rgba(0, 163, 75, 0.1);
+      padding: 5px 11px;
+      border-radius: 99px;
+      border: 1px solid rgba(0, 163, 75, 0.2);
+      white-space: nowrap;
+    }
+
+    .status-dot {
+      width: 6px; height: 6px;
+      background: var(--primary-light);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50%       { opacity: 0.55; transform: scale(0.8); }
+    }
+
+    /* ═══════════════════════════════════════
+       CHAT CONTAINER
+    ═══════════════════════════════════════ */
+    .chat-wrapper {
+      position: relative; z-index: 1;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      overflow: hidden;
+      max-width: 900px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 0 16px;
+    }
+
+    /* ═══════════════════════════════════════
+       MESSAGES AREA
+    ═══════════════════════════════════════ */
+    #messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 22px 0 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      scroll-behavior: smooth;
+    }
+
+    #messages::-webkit-scrollbar { width: 4px; }
+    #messages::-webkit-scrollbar-track { background: transparent; }
+    #messages::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+    .message {
+      display: flex;
+      gap: 10px;
+      animation: msgIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    @keyframes msgIn {
+      from { opacity: 0; transform: translateY(12px) scale(0.97); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .message.user { flex-direction: row-reverse; }
+
+    .avatar {
+      width: 34px; height: 34px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 15px;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .avatar.bot {
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      box-shadow: 0 0 10px var(--primary-glow);
+    }
+
+    .avatar.user {
+      background: rgba(239, 175, 30, 0.15);
+      border: 1px solid rgba(239, 175, 30, 0.3);
+    }
+
+    .bubble {
+      max-width: min(76%, 600px);
+      padding: 12px 16px;
+      border-radius: var(--radius-lg);
+      font-size: 0.88rem;
+      line-height: 1.65;
+      position: relative;
+    }
+
+    .bubble.bot {
+      background: var(--bg-msg-bot);
+      border: 1px solid var(--border);
+      border-bottom-left-radius: 4px;
+      color: var(--text-primary);
+    }
+
+    .bubble.user {
+      background: var(--bg-msg-user);
+      border-bottom-right-radius: 4px;
+      color: #fff;
+      box-shadow: 0 4px 18px var(--primary-glow);
+    }
+
+    .bubble.bot strong { color: var(--primary-light); font-weight: 600; }
+    .bubble.bot em     { color: var(--accent-light); font-style: italic; }
+    .bubble.bot ul, .bubble.bot ol { margin: 8px 0 8px 18px; }
+    .bubble.bot li { margin-bottom: 4px; }
+    .bubble.bot p  { margin-bottom: 8px; }
+    .bubble.bot p:last-child { margin-bottom: 0; }
+    .bubble.bot a  { color: var(--primary-light); text-decoration: underline; }
+    .bubble.bot code { background: rgba(0,163,75,0.12); padding: 1px 5px; border-radius: 4px; font-family: monospace; font-size: 0.85em; }
+    .bubble.bot h3 { color: var(--accent-light); font-size: 0.93rem; margin: 10px 0 5px; font-weight: 600; }
+
+    .msg-time { font-size: 0.63rem; color: var(--text-muted); margin-top: 4px; padding: 0 4px; text-align: right; }
+    .message.user .msg-time { text-align: left; }
+
+    /* ── Typing Indicator ── */
+    .typing-indicator { display: flex; gap: 10px; align-items: flex-end; }
+
+    .typing-dots {
+      background: var(--bg-msg-bot);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      border-bottom-left-radius: 4px;
+      padding: 13px 17px;
+      display: flex;
+      gap: 5px;
+      align-items: center;
+    }
+
+    .dot {
+      width: 6px; height: 6px;
+      background: var(--primary-light);
+      border-radius: 50%;
+      animation: dotBounce 1.4s infinite ease-in-out;
+    }
+    .dot:nth-child(2) { animation-delay: 0.16s; }
+    .dot:nth-child(3) { animation-delay: 0.32s; }
+
+    @keyframes dotBounce {
+      0%, 60%, 100% { transform: translateY(0); opacity: 0.5; }
+      30%            { transform: translateY(-6px); opacity: 1; }
+    }
+
+    /* ═══════════════════════════════════════
+       QUICK REPLIES
+    ═══════════════════════════════════════ */
+    .quick-replies {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      padding: 10px 0 4px;
+    }
+
+    .quick-btn {
+      background: rgba(0, 163, 75, 0.07);
+      border: 1px solid var(--border);
+      border-radius: 99px;
+      color: var(--primary-light);
+      font-size: 0.76rem;
+      font-weight: 500;
+      padding: 6px 13px;
+      cursor: pointer;
+      transition: var(--transition);
+      white-space: nowrap;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .quick-btn:hover {
+      background: rgba(0, 163, 75, 0.2);
+      border-color: var(--border-hover);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 10px var(--primary-glow);
+    }
+
+    /* ═══════════════════════════════════════
+       INPUT AREA
+    ═══════════════════════════════════════ */
+    .input-area {
+      flex-shrink: 0;
+      padding: 10px 0 18px;
+      border-top: 1px solid var(--border);
+    }
+
+    .input-box {
+      display: flex;
+      align-items: flex-end;
+      gap: 10px;
+      background: var(--bg-input);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 9px 9px 9px 16px;
+      transition: var(--transition);
+    }
+
+    .input-box:focus-within {
+      border-color: var(--primary-light);
+      box-shadow: 0 0 0 3px rgba(0, 163, 75, 0.1), var(--shadow-green);
+    }
+
+    #userInput {
+      flex: 1;
+      background: none;
+      border: none;
+      outline: none;
+      color: var(--text-primary);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.9rem;
+      line-height: 1.5;
+      resize: none;
+      max-height: 140px;
+      min-height: 24px;
+      overflow-y: auto;
+      scrollbar-width: none;
+    }
+
+    #userInput::placeholder { color: var(--text-muted); }
+    #userInput::-webkit-scrollbar { display: none; }
+
+    .send-btn {
+      width: 40px; height: 40px;
+      background: var(--bg-msg-user);
+      border: none;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: var(--transition);
+      flex-shrink: 0;
+    }
+
+    .send-btn:hover { transform: scale(1.08); box-shadow: 0 4px 14px var(--primary-glow); }
+    .send-btn:active { transform: scale(0.95); }
+    .send-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+    .send-btn svg { width: 17px; height: 17px; fill: #fff; }
+
+    /* ═══════════════════════════════════════
+       FOOTER INFO BAR
+    ═══════════════════════════════════════ */
+    .footer-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 7px 4px 0;
+    }
+
+    .footer-hint { font-size: 0.66rem; color: var(--text-muted); }
+
+    .new-chat-btn {
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.68rem;
+      padding: 4px 10px;
+      border-radius: 99px;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .new-chat-btn:hover { color: var(--primary-light); border-color: var(--border-hover); }
+
+    /* ═══════════════════════════════════════
+       EMPTY STATE
+    ═══════════════════════════════════════ */
+    .empty-state {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 40px 20px;
+      gap: 22px;
+    }
+
+    .empty-logo {
+      width: 76px; height: 76px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      border-radius: 22px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 36px;
+      box-shadow: 0 0 50px var(--primary-glow);
+      animation: floatAnim 3s ease-in-out infinite;
+    }
+
+    @keyframes floatAnim {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(-8px); }
+    }
+
+    .empty-title {
+      font-size: 1.55rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #fff 0%, var(--primary-light) 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      line-height: 1.3;
+    }
+
+    .empty-subtitle {
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      max-width: 420px;
+      line-height: 1.65;
+    }
+
+    .empty-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+      max-width: 500px;
+    }
+
+    .tag {
+      background: rgba(0, 163, 75, 0.08);
+      border: 1px solid var(--border);
+      border-radius: 99px;
+      color: var(--primary-light);
+      font-size: 0.76rem;
+      padding: 6px 14px;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .tag:hover {
+      background: rgba(0, 163, 75, 0.2);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px var(--primary-glow);
+    }
+
+    /* ── Lang change notice ── */
+    .lang-notice {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(239,175,30,0.08);
+      border: 1px solid rgba(239,175,30,0.2);
+      border-radius: var(--radius-md);
+      padding: 8px 14px;
+      font-size: 0.78rem;
+      color: var(--accent-light);
+      animation: msgIn 0.3s ease;
+    }
+
+    /* Toast */
+    #toast {
+      position: fixed;
+      bottom: 80px; left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: rgba(17, 26, 20, 0.95);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 9px 18px;
+      font-size: 0.8rem;
+      color: var(--primary-light);
+      backdrop-filter: blur(12px);
+      opacity: 0;
+      transition: all 0.3s ease;
+      pointer-events: none;
+      z-index: 100;
+    }
+    #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    @media (max-width: 600px) {
+      .header { padding: 9px 12px; }
+      .brand-text .name { font-size: 0.88rem; }
+      .header-status { display: none; }
+      .lang-btn { padding: 5px 9px; }
+      .chat-wrapper { padding: 0 10px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── HEADER ─────────────────────────────────────────────────── -->
+<header class="header">
+  <div class="header-brand">
+    <div class="logo-badge">🎓</div>
+    <div class="brand-text">
+      <div class="name">Asia University Vietnam</div>
+      <div class="sub" id="headerSub">Trợ lý Tư vấn Tuyển sinh AI · 24/7</div>
+    </div>
+  </div>
+
+  <div class="header-controls">
+    <!-- Language Toggle -->
+    <div class="lang-toggle" role="group" aria-label="Language selector">
+      <button class="lang-btn active" id="btnVI" onclick="setLanguage('vi')" title="Tiếng Việt">🇻🇳 VI</button>
+      <button class="lang-btn"        id="btnEN" onclick="setLanguage('en')" title="English">🇬🇧 EN</button>
+    </div>
+
+    <div class="header-status">
+      <span class="status-dot"></span>
+      <span id="statusText">Đang hoạt động</span>
+    </div>
+  </div>
+</header>
+
+<!-- ── MAIN CHAT ──────────────────────────────────────────────── -->
+<div class="chat-wrapper">
+
+  <div id="messages">
+    <div class="empty-state" id="emptyState">
+      <div class="empty-logo">🎓</div>
+      <div class="empty-title" id="emptyTitle">Xin chào! Tôi có thể<br/>giúp gì cho bạn?</div>
+      <div class="empty-subtitle" id="emptySubtitle">
+        Hỏi bất kỳ điều gì về <strong style="color:var(--primary-light)">Asia University Vietnam</strong> –
+        ngành học, học bổng, tuyển sinh, cuộc sống tại Đài Loan.
+      </div>
+      <div class="empty-tags" id="emptyTags">
+        <span class="tag" onclick="quickAsk(this.textContent.trim())">🏆 Học bổng có gì?</span>
+        <span class="tag" onclick="quickAsk(this.textContent.trim())">📚 Các ngành học</span>
+        <span class="tag" onclick="quickAsk(this.textContent.trim())">📋 Điều kiện tuyển sinh</span>
+        <span class="tag" onclick="quickAsk(this.textContent.trim())">💰 Học phí bao nhiêu?</span>
+        <span class="tag" onclick="quickAsk(this.textContent.trim())">✈️ Học ở Đài Loan ra sao?</span>
+        <span class="tag" onclick="quickAsk(this.textContent.trim())">🎯 Cơ hội việc làm sau tốt nghiệp</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick Replies -->
+  <div class="quick-replies" id="quickReplies" style="display:none" aria-label="Quick questions">
+    <button class="quick-btn" id="qr1" onclick="quickAsk(this.dataset.vi)" data-vi="Học bổng có những loại nào?" data-en="What scholarships are available?">🏆 <span data-i18n="scholarships">Học bổng</span></button>
+    <button class="quick-btn" id="qr2" onclick="quickAsk(this.dataset.vi)" data-vi="Điều kiện xét tuyển là gì?" data-en="What are the admission requirements?">📋 <span data-i18n="requirements">Điều kiện</span></button>
+    <button class="quick-btn" id="qr3" onclick="quickAsk(this.dataset.vi)" data-vi="Các ngành học tại Asia Vietnam?" data-en="What programs does Asia Vietnam offer?">📚 <span data-i18n="programs">Ngành học</span></button>
+    <button class="quick-btn" id="qr4" onclick="quickAsk(this.dataset.vi)" data-vi="Học phí khoảng bao nhiêu?" data-en="How much is the tuition fee?">💰 <span data-i18n="tuition">Học phí</span></button>
+    <button class="quick-btn" id="qr5" onclick="quickAsk(this.dataset.vi)" data-vi="Cuộc sống tại Đài Loan như thế nào?" data-en="What is life like in Taiwan?">✈️ <span data-i18n="taiwan">Đài Loan</span></button>
+  </div>
+
+  <!-- Input Area -->
+  <div class="input-area">
+    <div class="input-box">
+      <textarea
+        id="userInput"
+        placeholder="Hỏi về ngành học, học bổng, tuyển sinh..."
+        rows="1"
+        maxlength="2000"
+        aria-label="Nhập câu hỏi của bạn"
+      ></textarea>
+      <button class="send-btn" id="sendBtn" onclick="sendMessage()" aria-label="Gửi tin nhắn">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+        </svg>
+      </button>
+    </div>
+    <div class="footer-bar">
+      <span class="footer-hint" id="footerHint">Enter để gửi · Shift+Enter xuống dòng</span>
+      <button class="new-chat-btn" onclick="newChat()" id="newChatBtn">🔄 <span data-i18n="newChat">Cuộc trò chuyện mới</span></button>
+    </div>
+  </div>
+
+</div>
+
+<div id="toast"></div>
+
+<!-- ── JAVASCRIPT ──────────────────────────────────────────────── -->
+<script>
+  // ─── State ───────────────────────────────────────────────────
+  let sessionId   = null;
+  let isLoading   = false;
+  let messageCount = 0;
+  let currentLang = 'vi';  // 'vi' | 'en'
+
+  // ─── i18n strings ────────────────────────────────────────────
+  const i18n = {
+    vi: {
+      headerSub:    'Trợ lý Tư vấn Tuyển sinh AI · 24/7',
+      statusText:   'Đang hoạt động',
+      emptyTitle:   'Xin chào! Tôi có thể<br/>giúp gì cho bạn?',
+      emptySubtitle:'Hỏi bất kỳ điều gì về <strong style="color:var(--primary-light)">Asia University Vietnam</strong> – ngành học, học bổng, tuyển sinh, cuộc sống tại Đài Loan.',
+      placeholder:  'Hỏi về ngành học, học bổng, tuyển sinh...',
+      footerHint:   'Enter để gửi · Shift+Enter xuống dòng',
+      newChat:      'Cuộc trò chuyện mới',
+      scholarships: 'Học bổng',
+      requirements: 'Điều kiện',
+      programs:     'Ngành học',
+      tuition:      'Học phí',
+      taiwan:       'Đài Loan',
+      langNotice:   '🇻🇳 Đã chuyển sang Tiếng Việt – AI sẽ trả lời bằng tiếng Việt.',
+      toastNewChat: '✅ Đã bắt đầu cuộc trò chuyện mới',
+      emptyTags: [
+        '🏆 Học bổng có gì?', '📚 Các ngành học',
+        '📋 Điều kiện tuyển sinh', '💰 Học phí bao nhiêu?',
+        '✈️ Học ở Đài Loan ra sao?', '🎯 Cơ hội việc làm sau tốt nghiệp'
+      ],
+      quickData: [
+        'Học bổng có những loại nào?', 'Điều kiện xét tuyển là gì?',
+        'Các ngành học tại Asia Vietnam?', 'Học phí khoảng bao nhiêu?',
+        'Cuộc sống tại Đài Loan như thế nào?'
+      ],
+    },
+    en: {
+      headerSub:    'AI Admission Consulting Assistant · 24/7',
+      statusText:   'Online',
+      emptyTitle:   'Hello! How can I<br/>help you today?',
+      emptySubtitle:'Ask anything about <strong style="color:var(--primary-light)">Asia University Vietnam</strong> – programs, scholarships, admissions, life in Taiwan.',
+      placeholder:  'Ask about programs, scholarships, admissions...',
+      footerHint:   'Press Enter to send · Shift+Enter for new line',
+      newChat:      'New Conversation',
+      scholarships: 'Scholarships',
+      requirements: 'Requirements',
+      programs:     'Programs',
+      tuition:      'Tuition',
+      taiwan:       'Life in Taiwan',
+      langNotice:   '🇬🇧 Switched to English – AI will respond in English.',
+      toastNewChat: '✅ New conversation started',
+      emptyTags: [
+        '🏆 Available scholarships?', '📚 Programs & majors',
+        '📋 Admission requirements', '💰 How much is tuition?',
+        '✈️ Life in Taiwan', '🎯 Career opportunities'
+      ],
+      quickData: [
+        'What scholarships are available?', 'What are the admission requirements?',
+        'What programs does Asia Vietnam offer?', 'How much is the tuition fee?',
+        'What is life like in Taiwan?'
+      ],
+    }
+  };
+
+  // ─── DOM refs ────────────────────────────────────────────────
+  const messagesEl   = document.getElementById('messages');
+  const inputEl      = document.getElementById('userInput');
+  const sendBtn      = document.getElementById('sendBtn');
+  const emptyState   = document.getElementById('emptyState');
+  const quickReplies = document.getElementById('quickReplies');
+
+  // ─── Apply i18n ───────────────────────────────────────────────
+  function applyLanguage(lang) {
+    const t = i18n[lang];
+    document.documentElement.lang = lang;
+    document.getElementById('headerSub').textContent  = t.headerSub;
+    document.getElementById('statusText').textContent  = t.statusText;
+    document.getElementById('emptyTitle').innerHTML    = t.emptyTitle;
+    document.getElementById('emptySubtitle').innerHTML = t.emptySubtitle;
+    document.getElementById('footerHint').textContent  = t.footerHint;
+    inputEl.placeholder = t.placeholder;
+
+    // Quick reply labels
+    const qrIds = ['qr1','qr2','qr3','qr4','qr5'];
+    const dataKey = lang === 'en' ? 'data-en' : 'data-vi';
+    qrIds.forEach(id => {
+      const btn = document.getElementById(id);
+      if (btn) btn.setAttribute('onclick', `quickAsk(this.getAttribute('${dataKey}'))`);
+    });
+
+    // i18n spans
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.getAttribute('data-i18n');
+      if (t[key]) el.textContent = t[key];
+    });
+
+    // Empty state tags
+    const tagsEl = document.getElementById('emptyTags');
+    if (tagsEl) {
+      tagsEl.innerHTML = t.emptyTags.map(tag =>
+        `<span class="tag" onclick="quickAsk('${tag.replace(/'/g, "\\'")}')">${tag}</span>`
+      ).join('');
+    }
+
+    // Toggle button style
+    document.getElementById('btnVI').classList.toggle('active', lang === 'vi');
+    document.getElementById('btnEN').classList.toggle('active', lang === 'en');
+  }
+
+  // ─── Language toggle ──────────────────────────────────────────
+  function setLanguage(lang) {
+    if (lang === currentLang) return;
+    currentLang = lang;
+    applyLanguage(lang);
+
+    // Show language change notice in chat (if there are messages)
+    if (messageCount > 0) {
+      const notice = document.createElement('div');
+      notice.className = 'lang-notice';
+      notice.innerHTML = `<span>${i18n[lang].langNotice}</span>`;
+      messagesEl.appendChild(notice);
+      scrollToBottom();
+      setTimeout(() => notice.remove(), 5000);
+    }
+  }
+
+  // ─── Auto-resize textarea ────────────────────────────────────
+  inputEl.addEventListener('input', () => {
+    inputEl.style.height = 'auto';
+    inputEl.style.height = Math.min(inputEl.scrollHeight, 140) + 'px';
+  });
+
+  inputEl.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+  });
+
+  // ─── Utilities ───────────────────────────────────────────────
+  function getTime() {
+    return new Date().toLocaleTimeString(currentLang === 'vi' ? 'vi-VN' : 'en-US',
+      { hour: '2-digit', minute: '2-digit' });
+  }
+
+  function scrollToBottom() {
+    setTimeout(() => messagesEl.scrollTo({ top: messagesEl.scrollHeight, behavior: 'smooth' }), 50);
+  }
+
+  function showToast(msg, duration = 3000) {
+    const toast = document.getElementById('toast');
+    toast.textContent = msg;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), duration);
+  }
+
+  // ─── Markdown renderer ───────────────────────────────────────
+  function renderMarkdown(text) {
+    return text
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+      .replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>')
+      .replace(/\*(.*?)\*/g,'<em>$1</em>')
+      .replace(/`([^`]+)`/g,'<code>$1</code>')
+      .replace(/^### (.+)$/gm,'<h3>$1</h3>')
+      .replace(/^[•\-\*] (.+)$/gm,'<li>$1</li>')
+      .replace(/^\d+\. (.+)$/gm,'<li>$1</li>')
+      .replace(/\[([^\]]+)\]\(([^)]+)\)/g,'<a href="$2" target="_blank" rel="noopener">$1</a>')
+      .replace(/(?<!href=")(https?:\/\/[^\s<]+)/g,'<a href="$1" target="_blank" rel="noopener">$1</a>')
+      .replace(/\n\n/g,'</p><p>')
+      .replace(/\n/g,'<br>');
+  }
+
+  // ─── Add message ─────────────────────────────────────────────
+  function addMessage(role, text) {
+    if (messageCount === 0) {
+      emptyState.style.display = 'none';
+      quickReplies.style.display = 'flex';
+    }
+    messageCount++;
+
+    const div = document.createElement('div');
+    div.className = `message ${role}`;
+
+    const avatar = document.createElement('div');
+    avatar.className = `avatar ${role}`;
+    avatar.textContent = role === 'bot' ? '🤖' : '👤';
+
+    const content = document.createElement('div');
+    const bubble = document.createElement('div');
+    bubble.className = `bubble ${role}`;
+
+    if (role === 'bot') {
+      bubble.innerHTML = `<p>${renderMarkdown(text)}</p>`;
+    } else {
+      bubble.textContent = text;
+    }
+
+    const time = document.createElement('div');
+    time.className = 'msg-time';
+    time.textContent = getTime();
+
+    content.appendChild(bubble);
+    content.appendChild(time);
+    div.appendChild(avatar);
+    div.appendChild(content);
+    messagesEl.appendChild(div);
+    scrollToBottom();
+  }
+
+  // ─── Typing indicator ─────────────────────────────────────────
+  function showTyping() {
+    const div = document.createElement('div');
+    div.className = 'typing-indicator';
+    div.id = 'typingIndicator';
+    const avatar = document.createElement('div');
+    avatar.className = 'avatar bot';
+    avatar.textContent = '🤖';
+    const dots = document.createElement('div');
+    dots.className = 'typing-dots';
+    dots.innerHTML = '<div class="dot"></div><div class="dot"></div><div class="dot"></div>';
+    div.appendChild(avatar);
+    div.appendChild(dots);
+    messagesEl.appendChild(div);
+    scrollToBottom();
+  }
+
+  function hideTyping() {
+    const el = document.getElementById('typingIndicator');
+    if (el) el.remove();
+  }
+
+  // ─── Send message ─────────────────────────────────────────────
+  async function sendMessage() {
+    const text = inputEl.value.trim();
+    if (!text || isLoading) return;
+
+    isLoading = true;
+    sendBtn.disabled = true;
+    addMessage('user', text);
+    inputEl.value = '';
+    inputEl.style.height = 'auto';
+    showTyping();
+
+    try {
+      const res = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          message: text,
+          session_id: sessionId,
+          language: currentLang,   // ← gửi ngôn ngữ hiện tại
+        }),
+      });
+
+      const data = await res.json();
+      hideTyping();
+
+      if (res.ok && data.status === 'success') {
+        sessionId = data.session_id;
+        addMessage('bot', data.response);
+      } else if (data.status === 'config_error') {
+        addMessage('bot',
+          currentLang === 'en'
+            ? '⚠️ **Gemini API Key not configured.**\n\nPlease add GEMINI_API_KEY to the .env file and restart the server.'
+            : '⚠️ **Chưa cấu hình Gemini API Key.**\n\nVui lòng thêm GEMINI_API_KEY vào file .env và restart server.'
+        );
+      } else {
+        addMessage('bot', `❌ ${data.error || (currentLang === 'en' ? 'An error occurred. Please try again.' : 'Đã xảy ra lỗi. Vui lòng thử lại.')}`);
+      }
+    } catch (err) {
+      hideTyping();
+      addMessage('bot', currentLang === 'en'
+        ? '❌ Cannot connect to server. Please try again.'
+        : '❌ Không thể kết nối đến server. Vui lòng kiểm tra lại.'
+      );
+    } finally {
+      isLoading = false;
+      sendBtn.disabled = false;
+      inputEl.focus();
+    }
+  }
+
+  // ─── Quick ask ───────────────────────────────────────────────
+  function quickAsk(text) {
+    if (!text) return;
+    inputEl.value = text;
+    sendMessage();
+  }
+
+  // ─── New chat ────────────────────────────────────────────────
+  async function newChat() {
+    if (isLoading) return;
+    try {
+      await fetch('/api/new-session', { method: 'POST' });
+      sessionId = null;
+      messageCount = 0;
+      messagesEl.innerHTML = '';
+      emptyState.style.display = 'flex';
+      messagesEl.appendChild(emptyState);
+      quickReplies.style.display = 'none';
+      showToast(i18n[currentLang].toastNewChat);
+    } catch (e) {
+      showToast('❌ Error');
+    }
+  }
+
+  // ─── Load greeting ───────────────────────────────────────────
+  async function loadGreeting() {
+    try {
+      const res = await fetch('/api/greeting');
+      const data = await res.json();
+      setTimeout(() => addMessage('bot', data.greeting), 600);
+    } catch (e) { /* silent */ }
+  }
+
+  // ─── Init ────────────────────────────────────────────────────
+  window.addEventListener('DOMContentLoaded', () => {
+    applyLanguage('vi');
+    inputEl.focus();
+    loadGreeting();
+  });
+</script>
+
+</body>
+</html>
